@@ -1,14 +1,14 @@
 from datetime import datetime
 from flask_wtf import Form
 from wtforms import StringField, SelectField, SelectMultipleField, DateTimeField, BooleanField 
-from wtforms.validators import DataRequired, AnyOf, URL, Regexp
+from wtforms.validators import DataRequired, AnyOf, URL, Regexp, Optional
 
 class ShowForm(Form):
     artist_id = StringField(
-        'artist_id'
+        'artist_id', validators=[DataRequired()]
     )
     venue_id = StringField(
-        'venue_id'
+        'venue_id', validators=[DataRequired()]
     )
     start_time = DateTimeField(
         'start_time',
@@ -83,10 +83,10 @@ class VenueForm(Form):
         'address', validators=[DataRequired()]
     )
     phone = StringField(
-        'phone'
+        'phone', validators=[Regexp(r'^[0-9\-\+]+$')]
     )
     image_link = StringField(
-        'image_link', validators=[DataRequired()]
+        'image_link', validators=[DataRequired(), URL()]
     )
     genres = SelectMultipleField(
         # TODO implement enum restriction
@@ -118,7 +118,7 @@ class VenueForm(Form):
         'seeking_talent'
     )
     facebook_link = StringField(
-        'facebook_link', validators=[URL()]
+        'facebook_link', validators=[DataRequired(), URL()]
     )
     website = StringField(
         'website', validators=[DataRequired(), URL()] )
@@ -192,7 +192,7 @@ class ArtistForm(Form):
         validators=[Regexp(r'^[0-9\-\+]+$')]
     )
     image_link = StringField(
-        'image_link', validators=[DataRequired()]
+        'image_link', validators=[DataRequired(), URL()]
     )
     genres = SelectMultipleField(
         # TODO implement enum restriction
@@ -221,13 +221,13 @@ class ArtistForm(Form):
     )
     facebook_link = StringField(
         # TODO implement enum restriction
-        'facebook_link', validators=[URL()]
+        'facebook_link', validators=[Optional(), URL()]
     )
     seeking_venue = BooleanField('seeking_venue', default='checked')
     seeking_description = StringField(
         'seeking_talent'
     )
     website = StringField(
-        'website', validators=[DataRequired(), URL()] )
+        'website', validators=[Optional(), URL()] )
 
 # TODO IMPLEMENT NEW ARTIST FORM AND NEW SHOW FORM
