@@ -22,7 +22,7 @@ class QuizView extends Component {
 
   componentDidMount(){
     $.ajax({
-      url: `/categories`, //TODO: update request URL
+      url: `http://127.0.0.1:5000/categories`, //TODO: update request URL
       type: "GET",
       success: (result) => {
         this.setState({ categories: result.categories })
@@ -47,8 +47,10 @@ class QuizView extends Component {
     const previousQuestions = [...this.state.previousQuestions]
     if(this.state.currentQuestion.id) { previousQuestions.push(this.state.currentQuestion.id) }
 
+    console.log(previousQuestions)
+
     $.ajax({
-      url: '/quizzes', //TODO: update request URL
+      url: `http://127.0.0.1:5000/quizzes?category=${this.state.quizCategory.id}&prevQuestions=${previousQuestions}`, //TODO: update request URL
       type: "POST",
       dataType: 'json',
       contentType: 'application/json',
@@ -56,9 +58,9 @@ class QuizView extends Component {
         previous_questions: previousQuestions,
         quiz_category: this.state.quizCategory
       }),
-      xhrFields: {
-        withCredentials: true
-      },
+     // xhrFields: {
+     //   withCredentials: true
+      //},
       crossDomain: true,
       success: (result) => {
         this.setState({
@@ -131,10 +133,21 @@ class QuizView extends Component {
   }
 
   evaluateAnswer = () => {
-    const formatGuess = this.state.guess.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase()
-    const answerArray = this.state.currentQuestion.answer.toLowerCase().split(' ');
-    return answerArray.includes(formatGuess)
-  }
+
+    const formatGuess = this.state.guess.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\s]/g,"").toLowerCase()
+    
+    const answerArray = this.state.currentQuestion.answer.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()\s]/g,"").toLowerCase();
+    
+    if (answerArray == formatGuess) {
+    
+    return true
+    
+    }
+    
+      else {
+        return false
+      }
+    }
 
   renderCorrectAnswer(){
     const formatGuess = this.state.guess.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase()
