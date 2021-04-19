@@ -4,7 +4,7 @@ import json
 from flask_sqlalchemy import SQLAlchemy
 from flask import jsonify
 from flaskr import  __init__ , create_app
-from models import setup_db, Question, Category
+from models import setup_db, Question, DB_PATH
 
 
 class TriviaTestCase(unittest.TestCase):
@@ -21,7 +21,7 @@ class TriviaTestCase(unittest.TestCase):
             'answer' : 'answer test',
             'category' : 1,
             'difficulty' : 2}
-        setup_db(self.app, self.database_path)
+        setup_db(self.app)
 
         # binds the app to the current context
         with self.app.app_context():
