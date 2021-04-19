@@ -404,7 +404,7 @@ Example, calling this endpoint:
 ```
 http://127.0.0.1:5000/quizzes?category=1&prevQuestions=20,33
 ```
-this will return a question not in the `prevQuestions=20,33`:
+this will return a question with `id: 22` with the same category and not in the `prevQuestions` list `[20,33]`:
 ```
 {
     "question": {
@@ -422,7 +422,7 @@ Example, calling this endpoint with `category=0` will be based on all categories
 ```
 http://127.0.0.1:5000/quizzes?category=0&prevQuestions=20,33
 ```
-this will return a question not in the `prevQuestions=20,33` and from another category:
+this will return a question with `id: 6` which is from other category and not in the `prevQuestions` list `[20,33]`:
 ```
 {
     "question": {
