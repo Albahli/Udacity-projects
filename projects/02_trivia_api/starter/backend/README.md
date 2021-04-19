@@ -71,8 +71,8 @@ One note before you delve into your tasks: for each endpoint you are expected to
 ## Models
 ### Category
 - The Category model represents:
- - id
- - type
+  - id
+  - type
 
  Each `id` is fixed to a specific `type`, so for example:
 ```
@@ -88,11 +88,11 @@ One note before you delve into your tasks: for each endpoint you are expected to
 ### Question
 
 - The question model represents:
- - id
- - question
- - answer
- - category
- - difficulty
+  - id
+  - question
+  - answer
+  - category
+  - difficulty
 - The question belongs to specific category and the difficulty is an integer from 1 to 5 (The lower the easier)
 
 ```
@@ -144,7 +144,7 @@ will return:
 - POST
 - DELETE
 
-##### GET
+#### GET
 This end point will return:
 - List of categories.
 - List consisting of 10 elements of type Question.
@@ -190,13 +190,13 @@ will return:
       "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
 
     },
-   .
-   .
-   .
-   .
-   .
-   .
-   .
+   // .
+   // .
+   // .
+   // .
+   //.
+   // .
+   // .
    // 10th Question
    ],
   "success": true, 
@@ -210,7 +210,7 @@ You can also get the second 10 questions by doing the following:
 http://127.0.0.1:5000/questions?page=2
 ```
 
-##### POST
+#### POST
 
 Calling this endpoint with POST method will create a new question.
 
@@ -263,14 +263,14 @@ Example calling the endpoint:
       "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
 
     },
-   .
-   .
-   .
-   .
-   .
-   .
-   .
-   // 10th Question  
+   // .
+   // .
+   // .
+   // .
+   //.
+   // .
+   // .
+   // 10th Question
   "total_questions": 26
 }
 ```
@@ -279,7 +279,7 @@ Example calling the endpoint:
 ### Methods:
 - DELETE
 
-##### DELETE
+#### DELETE
 
 Calling this endpoint with DELETE method will basically delete a question.
 
