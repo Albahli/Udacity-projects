@@ -69,21 +69,21 @@ def get_drinks_with_long_info(jwt):
 @requires_auth('post:drinks')
 def create_drink(jwt):
     body = dict(request.json)
+    print("body: ", body)
     try:
-        if body.get('title') and body.get('recipe'):
             drink_data = json.loads(request.data.decode('utf-8'))
             drink = Drink(
                 title=drink_data['title'],
                 recipe=json.dumps(drink_data['recipe'])
                 )
             drink.insert()
-            drinks = list(map(Drink.long, Drink.query.all()))
+            drinks = Drink.query.all()
+            formatted_drinks = [drink.long() for drink in drinks]
             return jsonify({
                 "success" : True,
-                "drinks": drinks
+                "drinks": [formatted_drinks]
             }), 200
-        else:
-            abort(422)
+       
     except Exception as e:
         print(e)
         abort(422)
@@ -106,7 +106,7 @@ def create_drink(jwt):
 def modify_drink(jwt, id):
     body = dict(request.json)
     try:
-        if body.get('title') and body.get('recipe'):
+        if body.get('title') or body.get('recipe'):
             drink_data = json.loads(request.data.decode('utf-8'))
             
             title = drink_data['title'],
@@ -120,11 +120,11 @@ def modify_drink(jwt, id):
             drink.recipe = recipe
 
             drink.update()
-
-            drinks = list(map(Drink.long, Drink.query.all()))
+            drinks = Drink.query.all()
+            formatted_drinks = [drink.long() for drink in drinks]
             return jsonify({
                 "success" : True,
-                "drinks": drinks
+                "drinks": [formatted_drinks]
             }), 200
         else:
             abort(422)
@@ -157,7 +157,7 @@ def delete_drink(jwt, id):
         }), 200
     except Exception as e:
         print(e)
-        abort(404)
+        abort(422)
 
 
 ## Error Handling
