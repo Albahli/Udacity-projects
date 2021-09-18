@@ -4,7 +4,7 @@ from sqlalchemy import exc
 import json
 from flask_cors import CORS
 
-from .database.models import db_drop_and_create_all, setup_db, Drink
+from .database.models import Menu, db_drop_and_create_all, setup_db, Drink
 from .auth.auth import AuthError, requires_auth
 
 app = Flask(__name__)
@@ -28,6 +28,7 @@ CORS(app)
         or appropriate status code indicating reason for failure
 '''
 @app.route('/drinks')
+@requires_auth('get:drinks-detail')
 def get_drinks_with_short_info():
     
     drinks = list(map(Drink.short, Drink.query.all()))
@@ -142,6 +143,7 @@ def modify_drink(jwt, id):
     returns status code 200 and json {"success": True, "delete": id} where id is the id of the deleted record
         or appropriate status code indicating reason for failure
 '''
+
 @app.route('/drinks/<id>', methods =['DELETE'])
 @requires_auth('delete:drinks')
 def delete_drink(jwt, id):
@@ -158,6 +160,28 @@ def delete_drink(jwt, id):
     except Exception as e:
         print(e)
         abort(422)
+
+
+@app.route('/menus', methods =['POST'])
+@requires_auth('post:menu')
+def create_menu(jwt):
+    body = dict(request.json)
+    print("body: ", body)
+    try:
+            menu_data = json.loads(request.data.decode('utf-8'))
+            menu = Menu(title=menu_data['title'])
+            menu.insert()
+            menus = Menu.query.all()
+            formatted_menus = [menu.get_menu_name() for menu in menus]
+            return jsonify({
+                "success" : True,
+                "menus": [formatted_menus]
+            }), 200
+       
+    except Exception as e:
+        print(e)
+        abort(422)
+
 
 
 ## Error Handling

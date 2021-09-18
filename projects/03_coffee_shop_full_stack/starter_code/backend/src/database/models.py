@@ -107,3 +107,30 @@ class Drink(db.Model):
 
     def __repr__(self):
         return json.dumps(self.short())
+
+
+class Menu(db.Model):
+    # Autoincrementing, unique primary key
+    id = Column(Integer().with_variant(Integer, "sqlite"), primary_key=True)
+    # String Title
+    name = Column(String(80), unique=True)
+
+    def get_menu_name(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+        }
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    def __repr__(self):
+        return json.dumps(self.short())
